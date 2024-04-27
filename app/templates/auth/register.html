@@ -1,0 +1,21 @@
+{% extends 'auth/auth_base.html' %}
+{% import 'wtf.html' as wtf %}  
+{% block body %}
+<div class="section">
+  <div class="container">
+    <div class="columns is-justify-content-center">
+      <div class="column is-5">
+        <div class="box">
+
+          <h3 class="title is-3">Create an account</h3>
+          {{ wtf.quick_form(form) }}
+          <p>
+            Remembered your password?
+            <a href="{{ url_for('auth.login') }}">Login</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

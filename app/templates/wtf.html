@@ -1,0 +1,139 @@
+{% macro form_field(field, autofocus, fullwidth=True) %}
+  {%- if field.type == 'BooleanField' %}
+  <div class="field">
+    <label class="checkbox">
+      {{ field() }} {{ field.label }}
+    </label>
+  </div>
+  {%- elif field.type == 'RadioField' %}
+  <div class="field">
+    {{ field.label(class='label') }}
+    {%- for item in field %}
+    <label class="radio">
+      {{ item() }} {{ item.label }}
+    </label>
+    {%- endfor %}
+  </div>
+  {%- elif field.type == 'SelectField' %}
+  <div class="field">
+    {{ field.label(class='label') }}
+    <div class="control">
+      {{ field(class='select' + (' is-fullwidth' if fullwidth else ''), multiple=False) }}
+    </div>
+  </div>
+  {%- elif field.type == 'TextAreaField' %}
+  <div class="field">
+    {{ field.label(class='label') }}
+    <div class="control">
+      {{ field(class='textarea' + (' is-danger' if field.errors else ''), autofocus=autofocus, placeholder=field.description) }}
+    </div>
+    {%- for error in field.errors %}
+    <p class="help is-danger">{{ error }}</p>
+    {%- endfor %}
+  </div>
+  {%- elif field.type == 'SubmitField' %}
+  <div class="control">
+    {{ field(class='button is-primary' + (' is-fullwidth' if fullwidth else '')) }}
+  </div>
+  {%- else %}
+  <div class="field">
+    {{ field.label(class='label') }}
+    <div class="control">
+      {{ field(class='input' + (' is-danger' if field.errors else ''), autofocus=autofocus, placeholder=field.description) }}
+    </div>
+    {%- for error in field.errors %}
+    <p class="help is-danger">{{ error }}</p>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+{% endmacro %}
+
+{% macro form_field_with_input_groups(field, autofocus=false, fullwidth=True, min_width="220px", icons=None) %}
+  {%- if field.type == 'BooleanField' %}
+  <div class="field">
+    <label class="checkbox">
+      {{ field() }} {{ field.label }}
+    </label>
+  </div>
+  {%- elif field.type == 'RadioField' %}
+  <div class="field">
+    {{ field.label(class='label') }}
+    {%- for item in field %}
+    <label class="radio">
+      {{ item() }} {{ item.label }}
+    </label>
+    {%- endfor %}
+  </div>
+  {%- elif field.type == 'SelectField' %}
+  <div class="field">
+    <label class="label">{{ field.label.text }}</label>
+    <div class="control has-icons-left">
+      <div class="select {{ 'is-fullwidth' if fullwidth }}">
+        {{ field() }}
+      </div>
+      {% if icons and field.name in icons %}
+      <span class="icon is-small is-left"><i class="{{ icons[field.name] }}"></i></span>
+      {% endif %}
+    </div>
+  </div>
+  {%- elif field.type == 'TextAreaField' %}
+  <div class="field">
+    <label class="label">{{ field.label.text }}</label>
+    <div class="control">
+      {{ field(class='textarea' + (' is-danger' if field.errors else ''), autofocus=autofocus) }}
+    </div>
+    {%- for error in field.errors %}
+    <p class="help is-danger">{{ error }}</p>
+    {%- endfor %}
+  </div>
+  {%- elif field.type == 'SubmitField' %}
+  <div class="control">
+    {{ field(class='button is-primary' + (' is-fullwidth' if fullwidth else '')) }}
+  </div>
+  {%- else %}
+  <div class="field">
+    <label class="label">{{ field.label.text }}</label>
+    <div class="control has-icons-left">
+      {{ field(class='input' + (' is-danger' if field.errors else ''), autofocus=autofocus) }}
+      {% if icons and field.name in icons %}
+      <span class="icon is-small is-left"><i class="{{ icons[field.name] }}"></i></span>
+      {% endif %}
+    </div>
+    {%- for error in field.errors %}
+    <p class="help is-danger">{{ error }}</p>
+    {%- endfor %}
+  </div>
+  {%- endif %}
+{% endmacro %}
+
+{% macro quick_form(form, action="", method="post", id="", enctype="", novalidate=False, fullwidth=True, input_group=False, min_width='220px', icons=icons) %}
+    <form
+        {%- if action %} action="{{ action }}" {% endif -%}
+        {%- if enctype %} enctype="{{ enctype }}" {% endif -%}
+        {%- if method %} method="{{ method }}" {% endif %}
+        {%- if id %} id="{{ id }}" {% endif -%}
+        {%- if novalidate %} novalidate {% endif -%}
+        class="form">
+        {{ form.hidden_tag() }}
+        {%- for field, errors in form.errors.items() %}
+            {%- if form[field].widget.input_type == 'hidden' %}
+            {%- for error in errors %}
+            <div class="help is-danger">{{ error }}</div>
+            {%- endfor %}
+            {%- endif %}
+        {%- endfor %}
+
+        {% set ns = namespace(first_field=true) %}
+        {%- for field in form %}
+            {% if field.widget.input_type != 'hidden' -%}
+              {% if input_group %}
+                {{ form_field_with_input_groups(field, ns.first_field, fullwidth, min_width=min_width, icons=icons) }}
+              {% else %}
+                {{ form_field(field, ns.first_field, fullwidth) }}
+              {% endif %}
+            {% set ns.first_field = false %}
+            {%- endif %}
+        {%- endfor %}  
+    </form>
+{% endmacro %}
+

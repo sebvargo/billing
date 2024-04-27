@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% import 'wtf.html' as wtf %} 
+
+{% block body %}
+<section class="section">
+    <div class="container">
+      <h1 class="title">Welcome {{current_user.firstname|capitalize}}!</h1>
+      <p class="subtitle">
+        Automate contract to cash. 
+      </p>
+
+    </div>
+  </section>
+    <div class="container"> <!-- Bulma container -->
+      <div class="columns is-multiline"> <!-- Using columns and is-multiline to manage vertical spacing -->
+        <!-- File upload -->
+        <div class="column is-12"> <!-- Full-width column -->
+          {% include 'dropzone.html'   %}
+        </div>
+        
+        <!-- Table -->
+        <div class="column is-12"> <!-- Full-width column -->
+          Table
+        </div>
+      </div>
+    </div>
+  <!-- Scripts -->
+  <!-- <script src="/js/main.js"></script> -->
+
+  
+{% endblock %}

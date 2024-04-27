@@ -1,0 +1,16 @@
+{% block styles %}
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+{% endblock %}
+
+<form action="{{ url_for('main.upload') }}" class="dropzone" id="file-dropzone">
+  <div class="dz-message has-text-centered">
+    <div class="is-size-3 has-text-link"> <!-- Bulma classes for text size and color -->
+      <i class="bi bi-cloud-upload-fill"></i>
+    </div>
+    <p class="has-text-weight-semibold">Upload a file or drag and drop</p>
+
+    <p class="is-size-7 has-text-grey-dark">
+      PDF up to 50MB
+    </p>
+  </div>
+</form>

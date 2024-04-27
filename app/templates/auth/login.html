@@ -1,0 +1,19 @@
+{% extends 'auth/auth_base.html' %}
+{% import 'wtf.html' as wtf %} 
+
+{% block body %}
+<section class="section">
+    <div class="container">
+      <h1 class="title">Exante Billing</h1>
+      <p class="subtitle">
+        Automate contract to cash. 
+      </p>
+      {{ wtf.quick_form(form) }}
+
+    </div>
+  </section>
+  <!-- Scripts -->
+  <!-- <script src="/js/main.js"></script> -->
+
+  
+{% endblock %}
