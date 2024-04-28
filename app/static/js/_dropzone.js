@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const tkn_for_dropzone = document.getElementById("tkn").value;
-const documentIdField = document.getElementById("document-id-field");
 let myDropzone = new Dropzone("#file-dropzone2", {
   paramName: "file",
   url: "/documents",

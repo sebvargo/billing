@@ -1,0 +1,42 @@
+<div class="table-container" style="height:95%;overflow:auto;">
+
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Contract ID</th>
+                <th>Customer</th>
+                <th>Invoice #</th>
+                <th>Invoice Date</th>
+                <th>Due Date</th>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Invoice?</th>
+                <th>Actions</th>
+            </tr>
+    </thead>
+    <tbody>
+        
+        {% for bill in schedule %}
+        <tr>
+        <td>{{ bill.id }}</td>
+        <td>{{ bill.document_id }}</td>
+        <td>{{ bill.customer_name }}</td>
+        <td>{{ bill.invoice_number }}</td>
+        <td>{{ bill.invoice_date.strftime("%Y-%m-%d") }}</td>
+        <td>{{ bill.due_date.strftime("%Y-%m-%d") }}</td>
+        <td>{{ bill.product_name }}</td>
+        <td>{{ "${:,.0f}".format(bill.price) }}</td>
+        <td>{{ bill.invoice_id }}</td>
+        <td>
+            {% if bill.sent %}
+            <button href="{{url_for('main.stripe_bill', schedule_id = bill.id )}}" disabled class="button is-primary is-small"> Sent 💸</button>
+            {% else %}
+            <a href="#" class="button is-primary is-small">Send</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+</div>

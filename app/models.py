@@ -178,6 +178,7 @@ class Document(PaginatedAPIMixin, db.Model):
     timestamp: orm.Mapped[datetime] = orm.mapped_column(default=utc_time_now, type_=TIMESTAMP(timezone=True))
     last_modified: orm.Mapped[datetime] = orm.mapped_column(default=utc_time_now, type_=TIMESTAMP(timezone=True), server_default='2024-02-13 11:11:11.391181-07')
     full_text: orm.Mapped[Optional[str]]
+    filepath: orm.Mapped[Optional[str]]
     customer: orm.Mapped[Optional[str]] 
     effective_date: orm.Mapped[Optional[datetime]] = orm.mapped_column(type_=TIMESTAMP(timezone=True))
     contract_value: orm.Mapped[Optional[float]]
@@ -189,6 +190,7 @@ class Document(PaginatedAPIMixin, db.Model):
     
     # relationships
     user: orm.Mapped[User] = orm.relationship("User", back_populates="documents")
+    schedule: orm.WriteOnlyMapped["Schedule"] = orm.relationship("Schedule", back_populates="document")
     
     
     def __repr__(self) -> str:
@@ -230,3 +232,23 @@ class Document(PaginatedAPIMixin, db.Model):
             "product": self.product
         }
         return data
+
+class Schedule(PaginatedAPIMixin, db.Model):
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+    document_id: orm.Mapped[int] = orm.mapped_column(ForeignKey(Document.id), index=True)
+    customer_name: orm.Mapped[Optional[str]]
+    invoice_number: orm.Mapped[Optional[str]] 
+    invoice_date: orm.Mapped[Optional[datetime]] = orm.mapped_column(type_=TIMESTAMP(timezone=True))
+    due_date: orm.Mapped[Optional[datetime]] = orm.mapped_column(type_=TIMESTAMP(timezone=True))
+    product_name: orm.Mapped[Optional[str]]
+    price: orm.Mapped[Optional[float]]
+    sent: orm.Mapped[Optional[bool]] = orm.mapped_column(default=False)
+    invoice_id: orm.Mapped[Optional[str]]
+
+    # relationships
+    document: orm.Mapped[Document] = orm.relationship("Document", back_populates="schedule")
+    
+class Customer(PaginatedAPIMixin, db.Model):
+    id: orm.Mapped[int] = orm.mapped_column(primary_key=True)
+    customer_name: orm.Mapped[Optional[str]]
+    stripe_id: orm.Mapped[Optional[str]]

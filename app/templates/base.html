@@ -13,7 +13,6 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Exante @ Pear{%if title%}{{title}}{%endif%}</title>
         <link rel="stylesheet"  type="text/css" href="{{url_for('static', filename='css/main.css', _external=True)}}">
     {% block styles %}
@@ -24,7 +23,9 @@
     {% endblock %}
   </head>
   <body>
-    <main class="section" style="background-color: #f5f5f5; height: 100vh;"> <!-- Adjusted for Bulma, using 'section' for spacing and custom style for background color -->
+
+    {% include 'navbar.html'   %}
+    <main class="section" style="background-color: #f5f5f5; height: 100%;"> <!-- Adjusted for Bulma, using 'section' for spacing and custom style for background color -->
 
     {% block body %}
         

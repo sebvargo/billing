@@ -2,11 +2,12 @@
 {% import 'wtf.html' as wtf %} 
 
 {% block body %}
+<input type="hidden" id="tkn" value="{{ token }}" />
 <section class="section">
     <div class="container">
       <h1 class="title">Welcome {{current_user.firstname|capitalize}}!</h1>
       <p class="subtitle">
-        Automate contract to cash. 
+        Automate your contract-to-cash cycle. 
       </p>
 
     </div>
@@ -15,12 +16,14 @@
       <div class="columns is-multiline"> <!-- Using columns and is-multiline to manage vertical spacing -->
         <!-- File upload -->
         <div class="column is-12"> <!-- Full-width column -->
-          {% include 'dropzone.html'   %}
+          {% include 'main/dropzone.html'   %}
         </div>
-        
+        <br>
+        <hr>
+        <br>
         <!-- Table -->
         <div class="column is-12"> <!-- Full-width column -->
-          Table
+          {% include 'main/table_schedule.html'   %}
         </div>
       </div>
     </div>

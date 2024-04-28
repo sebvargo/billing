@@ -21,8 +21,6 @@ def login():
 
     # check for submission
     if form.validate_on_submit():
-        
-        
         user = db.session.scalar(
             sa.select(User).where(User.username == form.username.data)
         )
