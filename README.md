@@ -8,7 +8,7 @@ This project aims to extract billing schedules from contract data. It provides a
 
 ## Installation
 To use this project, follow these steps:
-1. Clone the repository: `git clone https://github.com/your-username/billing.git`
+1. Clone the repository
 2. Install the required dependencies: `pip install -r requirements.txt` and `npm install`
 3. If you want to customize the UI you just need to modify `custom.scss` and run `npm run build-bulma`
 
